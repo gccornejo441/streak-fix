@@ -1,0 +1,25 @@
+name: Keep Alive
+
+on:
+  schedule:
+    - cron: '0 17 * * *' # Every day at 5 PM UTC (adjust if needed)
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make dummy commit
+        run: |
+          echo "Keep alive - $(date)" >> keepalive.txt
+          git config user.name "Gabriel Cornejo"
+          git config user.email "gcornejo441@gmail.com"
+          git add keepalive.txt
+          git commit -m "chore: keep alive - $(date)" || echo "No changes to commit"
+
+      - name: Push commit
+        run: |
+          git push
