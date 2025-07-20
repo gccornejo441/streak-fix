@@ -2,7 +2,7 @@ name: Keep Alive
 
 on:
   schedule:
-    - cron: '0 17 * * *' # Every day at 5 PM UTC (adjust if needed)
+    - cron: '0 12 * * *'
   workflow_dispatch:
 
 jobs:
@@ -21,5 +21,8 @@ jobs:
           git commit -m "chore: keep alive - $(date)" || echo "No changes to commit"
 
       - name: Push commit
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          git push
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+          git push origin main
