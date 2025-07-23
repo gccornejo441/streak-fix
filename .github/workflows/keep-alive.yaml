@@ -11,20 +11,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true  
 
       - name: Make commit
         run: |
           echo "Keep alive - $(date)" >> keepalive.txt
-          git config user.name "Gabriel Cornejo"
-          git config user.email "gcornejo441@gmail.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add keepalive.txt
           git commit -m "chore: keep alive - $(date)" || echo "No changes to commit"
 
       - name: Push commit
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push origin main
+        run: git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
